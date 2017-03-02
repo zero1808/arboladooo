@@ -1,0 +1,48 @@
+.std_form *,.item{
+	font-family:Arial,Verdana, Geneva, Helvetica, sans-serif;
+	font-size:1em;
+}
+.std_form input[type=text], .std_form input[type=password],.std_form select,.std_form textarea, input.item,select.item,textarea.item{
+	width:100%;
+	border: 1px solid rgb(107, 145, 171);
+}
+
+.std_form select:focus, .std_form input:focus, .std_form textarea:focus,.item:focus{
+	  box-shadow: 0px 0px 5px rgba(27, 145, 178, 1);
+	  border: 1px solid rgba(27, 145, 178, 1);
+}
+.std_form input{
+	box-sizing: border-box;
+}
+
+.std_form select, .std_form input[type=text], .std_form input[type=password], select.item,input.item{
+	height:27px;
+	/*Con el estilo que ya se definio se ve bien sin el border-radius*/
+	border-radius:0px;
+	max-width: 100%;
+	padding: 1px 0px 1px 4px;
+	box-sizing: border-box;
+}
+
+.std_form textarea, textarea.item{
+	max-width:100%;
+	
+}
+
+.std_form label, label.item{
+	margin: 5px 0px 5px 0px;
+}
+.std_form input.item.mitad,.std_form textarea.item.mitad,.std_form select.item.mitad{
+	width:50%;
+	float:left;
+	font-size:1em;
+}
+
+.std_form input.item.grande,.std_form textarea.item.grande,.std_form select.item.grande{
+	height:50px;
+	font-size:2em;
+}
+.std_form label.item.grande{
+	height:25px;
+	font-size:2em;
+}

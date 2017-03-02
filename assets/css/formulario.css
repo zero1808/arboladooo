@@ -1,0 +1,111 @@
+fieldset.form{margin-bottom: 25px;}
+legend{
+    font-size: medium;
+    font-weight: bolder;
+    margin-bottom: 10px;
+}
+.imagen{
+    margin-bottom: 280px;
+    border: 2px solid #000000;
+    float: right;
+    height: 145px;
+    width: 125px;
+}
+.imagenA{
+    margin-bottom: 60px;
+    border: 2px solid #000000;
+    float: right;
+    height: 145px;
+    width: 125px;
+}
+h1#busq{
+	margin-top: 25px;
+	color: #294F88;
+	font-size: 2em;
+}
+.busqueda{
+    margin-left: 350px;
+    padding-bottom: 20px;
+}
+.nombre{padding-top: 20px;}
+.nombre div.campo{
+    overflow: auto;
+    float:left;
+    text-align: justify;
+}
+.lug{padding-top: 30px;}
+.lug div.campo{
+    overflow: auto;
+    float:left;
+    text-align: justify;
+}
+.domicilio{padding-top: 20px;}
+.domicilio div.campo{
+    overflow: auto;
+    float:left;
+    text-align: justify;
+}
+.pad{overflow: auto;}
+.lab div.campo{
+    overflow: auto;
+    float:left;
+    text-align: justify;
+}
+.pad div.campo{
+    overflow: auto;
+    float:left;
+    text-align: justify;
+}
+div.campo{
+    margin-bottom: 10px;
+    text-align: justify;
+    overflow: auto;
+}
+div.campo{
+    margin-bottom: 5px;
+    text-align: justify;
+    overflow: auto;
+}
+.campo input/*,select*/{
+    margin-top: 10px; 
+    margin-right: 10px;
+}
+.formAl{
+    border: 1px solid #6b91ab;
+    font-size: 14px;
+    width: 155px;
+    height: 26px;
+}
+.label{padding: 15px 15px 0 15px;}
+/*label,input {
+display: block;
+width: 150px;
+float: left;
+margin-bottom: 10px;
+}
+
+label {
+text-align: right;
+width: 200px;
+padding-right: 20px;
+}
+
+br {
+clear: left;
+}*/
+.padres{width: 300px;}
+.botonL{padding-top: 200px;}
+.botonP{padding-top: 10px;}
+.botonB{margin-bottom: 15px;}
+.botonM{margin-top: 105px;}
+/*padres_cc*/
+.idAlumno{float:left;}
+.pa input:text{width:450px;}
+.padre{float:left;}
+.madre{float:left;}
+/*competencias_cc*/
+.competencia{width: 350px;}
+/*dependencia_cc*/
+.dependecia{width: 350px;}
+/*edificio_cc*/
+.edificio{width: 350px;}

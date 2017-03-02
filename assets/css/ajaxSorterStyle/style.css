@@ -1,0 +1,232 @@
+/* AJAXSORTER 1.0 STYLE*/
+.ajaxSorterDiv{
+    width: 98%;
+    margin: 0px auto;
+    overflow: hidden;
+}
+table.ajaxSorter{
+    font-family:sans-serif;
+	color:black;
+    background-color: lightgray;
+    margin:0px;
+    font-size: 9pt;
+    width: 99.9%;
+    text-align: left;    
+    border-spacing: 0px;      
+}
+.ajaxSorterDiv span.ajaxTableH,
+.ajaxSorterDiv div.ajaxTableH{
+    display: block; 
+	width: 100%;
+    height: 126px;
+    overflow-y: auto;
+    padding: 0px;
+    margin:10px 0px;    
+    background-color:lightgray;   
+	color:black;
+}
+.ajaxSorterDiv span.ajaxTable,
+.ajaxSorterDiv div.ajaxTable{
+    display: block; 
+    height: 245px;
+    width: 100%;
+    overflow-y: auto;
+    padding: 0px;
+    margin:10px 0px;    
+	color:black;
+    background-color: lightgray;    
+}
+table.ajaxSorter thead tr{	
+    background-color: #DBE5F1;   
+    font-size: 9pt;
+    font-weight: bold;
+    color:#3D3D3D; 
+	height:21px;
+	
+}
+table.ajaxSorter thead tr th{ 
+    padding: 3px 5px;  
+    cursor: pointer;  
+	
+}
+table.ajaxSorter tbody{
+    cursor: pointer;    
+}
+table.ajaxSorter tbody tr{    
+	height:21px;
+}
+table.ajaxSorter tbody tr:nth-child(even){    
+    background-color: #DBE5F1;
+	color:black;
+}
+table.ajaxSorter tbody tr:nth-child(odd){    
+    background-color: white;
+}
+table.ajaxSorter tbody tr.odd{/*FOR IE 7 y 8*/
+	background-color: white;
+}
+table.ajaxSorter tbody tr.even{
+	background-color: #DBE5F1;
+	color:black;
+}
+table.ajaxSorter tbody tr.active:nth-child(even) td ,
+table.ajaxSorter tbody tr.active:nth-child(odd) td{    
+    color: lightcoral;
+}
+table.ajaxSorter tbody tr:hover{   
+    background-color: #D0FECA;     
+}
+table.ajaxSorter tbody tr td{
+    font-family: sans-serif;     
+	padding-top:4px;
+    padding-left: 5px;  
+	color:black;
+	height:17px;
+	border-bottom: solid 1px #D3D3D3;	
+}
+.none{
+    background-image: url(bg.gif);
+    background-repeat: no-repeat;
+    background-position: center right;
+}
+.asc{
+    background-image: url(asc.gif);
+    background-repeat: no-repeat;
+    background-position: center right;   
+}
+.desc{
+    background-image: url(desc.gif);
+    background-repeat: no-repeat;
+    background-position: center right;
+}
+.loading{
+    background-image: url(loading.gif);
+    background-repeat: no-repeat;
+	background-size:64px;
+	z-index:1;
+    background-position: center center;
+}
+.spacing{
+    padding: 5px;    
+}
+.custom_tab .filter .filter-text{
+     font-size: 9pt;	 
+	 height:24px;	 
+}
+.custom_tab .filter label{
+     font-size: 9pt;	 
+	 height:24px;	 
+}
+.filter{  
+  display:block;
+}
+.filter .filter-text{
+     font-size: 9pt;	 
+	 height:24px;	 
+}
+.filter input, .filter select{
+     font-size: 9pt;
+	 width:100px;
+}
+.ajaxpager ul.order_list{     	
+    width: 100px;  
+    margin-top:10px;
+    background-color:#F7F7F7;
+    list-style: none; 	
+    float:left;   
+    padding-left: 0px;
+}
+.filter input.keep_filter{
+    margin-right: 0px;
+    
+}
+.ajaxpager ul.order_list li{      
+    display: none;
+    text-align: left;
+    font-size: 9pt;  
+    padding: 2px;
+    border-bottom:solid 1px lightgray;	
+}
+
+.ajaxpager ul.order_list li:hover{
+    background-color: #F5F6CE;
+    background-image: url(del.png);
+    background-repeat: no-repeat;
+    background-position: center right;    
+}
+.ajaxpager input,
+.ajaxpager select{
+	width:50px;
+	height:20px;
+	padding:0px;
+	border-radius:0px;
+	text-align: center;
+}
+
+.ajaxpager ul.order_list li.list_header{
+    opacity: 1;   
+    display: block;    
+    text-align: center;    
+    padding: 1px 5px;
+    font-weight: bold;
+    background-color: #DBE5F1;
+}
+.ajaxpager ul.order_list:hover > li{ 
+    opacity: 1;    
+    display: block;
+}
+.filter label{
+    font-size: 9pt;
+}
+
+.ajaxpager {
+	margin-top:0px;
+    text-align: center;
+	overflow:hidden;
+}
+.ajaxpager form {  
+	margin:0px 0px;
+	float:right;
+}
+.ajaxpager form img{
+	vertical-align:sub;
+}
+td.ajaxSorterNULL{
+    font-weight: bold;	
+	text-align:center;
+	background-color:white;
+}
+.multiple_filter{    
+    background-color: lightgray;
+    margin-bottom:  -10px;		
+	overflow:hidden;
+    width: 100%;
+    font-size: 9pt;		
+	display:block;		
+}
+.multiple_filter table{
+	width: 99.9%;
+	margin:0px;	
+	border:0px;
+	padding:0px;
+	overflow:hidden;
+}
+.multiple_filter table tr td{
+	text-align:center;
+}
+.multiple_filter input{  
+	display:block;		
+    width: 99.9%;	
+	padding:0px;
+	margin:0px 0px 2px 0px;	
+	overflow:hidden;
+    font-size: 9pt;
+	padding:2px 2px;
+    border-radius: 3px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+}
+.multiple_filter input.ajax_sorter_range{  
+	display:inline;		
+    width: 45%;			
+}
