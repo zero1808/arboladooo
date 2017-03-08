@@ -15,10 +15,31 @@ class  Main  extends CI_Controller
         $this->load->view('main/index3',$datos);
       
     }   
-    
+    function goSecciones(){
+        $this->load->model('seccion_model');
+        $datos["secciones"]=$this->seccion_model->getSecciones();
+        $this->load->view('main/secciones',$datos);
+    }
     public function getCoordinates($id){
         $this->load->model('Distrito_model');
         $resultado=$this->Distrito_model->getCoordinates($id);
+        $data1= array();
+        $coordenadas;
+         foreach($resultado as $row){
+         $coordinates = $row->coordinates;
+         $coordenadas =  explode(",", $coordinates);
+            }
+        $data_total = array();
+          for ($i = 0; $i < count($coordenadas); $i++) {
+                array_push($data_total,$coordenadas[$i]);
+        }
+        $stack = array_pop($data_total);
+
+        echo json_encode($data_total);
+    }
+    public function getCoordinatesSeccion($id){
+        $this->load->model('Seccion_model');
+        $resultado=$this->Seccion_model->getCoordinates($id);
         $data1= array();
         $coordenadas;
          foreach($resultado as $row){
@@ -38,5 +59,9 @@ class  Main  extends CI_Controller
         $distrito = $this->input->post('distrito');
         $this->getCoordinates($distrito);
     }
-  
+    public function searchSeccion(){
+        $seccion = $this->input->post('seccionales');
+        $this->getCoordinatesSeccion($seccion);
+    }
+    
 }

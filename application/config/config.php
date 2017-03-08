@@ -17,7 +17,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | environments.
 |
 */
-$config['base_url'] = 'http://buscarv.com.mx/arbolado/';
+$config['base_url'] = 'http://localhost/github/arboladooo/';
 
 /*
 |--------------------------------------------------------------------------

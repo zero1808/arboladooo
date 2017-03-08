@@ -38,11 +38,11 @@
     <div id="map"></div>
            <div id="formContent" style="color:white;">
            <label>Busqueda por distrito:</label>
-                        <select class="form-control" id="distrito" name="distrito">
-                            <option value="0">Seleccione delegaciòn:</option>
-                            <?php if(isset($distritos)){
-                                    foreach($distritos as $distrito){?>
-                                    <option value="<?php echo $distrito->id;?>"><?php echo $distrito->name;?></option>
+                        <select class="form-control" id="seccion" name="seccion">
+                            <option value="0">Seleccione secci&oacute;n:</option>
+                            <?php if(isset($secciones)){
+                                    foreach($secciones as $seccion){?>
+                                    <option value="<?php echo $seccion->id;?>"><?php echo $seccion->seccion;?></option>
                             <?php }}?>
                         </select>
            
@@ -54,7 +54,6 @@
                         
                     <p> &copy; 2016 BuscarV. Todos los derechos reservados. </p>
                      <p><a href='<?php echo base_url();?>index.php/login/logout'>Cerrar sesi&oacute;n</a></p>   
-                     <p><a href='<?php echo base_url();?>index.php/main/goSecciones'>Seccionales</a></p>   
                     </strong>
                 </div>
                     </center>
@@ -70,57 +69,44 @@
     <script>
         
         $(document).ready(function(){
-                                $("#distrito").change(function(){
-                                    if($("#distrito").val()===0){
+                                $("#seccion").change(function(){
+                                    if($("#seccion").val()===0){
                                         
                                     }else{
                                    $.ajax({
-            url: "<?php echo base_url();?>index.php/main/searchDistrito",
+            url: "<?php echo base_url();?>index.php/main/searchSeccion",
             type: "POST",
             data:{
-                distrito:$("#distrito").val()
+                seccionales:$("#seccion").val()
                                    },
             success: function(data){
+                var triangleCoords =[];
                 var datos = $.parseJSON(data);
-                var i=0;
-                var latituds=[];
-                var longituds=[];
-                for(var i;i<datos.length;i++){
-                    if(i%2==0){
-                        latituds.push(datos[i]);
-                    }
-                    else{
-                        longituds.push(datos[i]);
-                    }
+                for(var i=0;i<datos.length;i++){
+                    var array = datos[i].split(" ");
+                    triangleCoords.push({ 
+        "lat" : parseFloat(array[2]),
+        "lng"  : parseFloat(array[1])
+    });
                 }
-                 var map = new google.maps.Map(document.getElementById('map'), {
-    zoom: 10,
-    center: {lat:parseFloat(longituds[0]), lng:parseFloat(latituds[0])},
+                var map = new google.maps.Map(document.getElementById('map'), {
+    zoom: 15,
+    center: {lat: triangleCoords[0].lat, lng:triangleCoords[0].lng},
     mapTypeId: google.maps.MapTypeId.TERRAIN
   });
 
   // Define the LatLng coordinates for the polygon's path.
                 
-  var triangleCoords = [];
- for(var j=0;j<longituds.length;j++){
-                    
-                 
-       triangleCoords.push({ 
-        "lat" : parseFloat(longituds[j]),
-        "lng"  : parseFloat(latituds[j])
-    });
-                }
   // Construct the polygon.
   var bermudaTriangle = new google.maps.Polygon({
     paths: triangleCoords,
-    strokeColor: '#FF0000',
+    strokeColor: '#0000FF',
     strokeOpacity: 0.8,
     strokeWeight: 2,
     fillColor: '#FF0000',
     fillOpacity: 0.35
   });
   bermudaTriangle.setMap(map);
-
                                 }
 
                     }); 
