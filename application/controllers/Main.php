@@ -53,15 +53,26 @@ class  Main  extends CI_Controller
         
         $stack = array_pop($data_total);
 
-        echo json_encode($data_total);
+        return $data_total;
+    }
+    public function getJovenes($seccional){
+        $this->load->model('Jovenes_model');
+        $resultado=$this->Jovenes_model->getJovenes($seccional);
+        return $resultado;
     }
     public function searchDistrito(){
         $distrito = $this->input->post('distrito');
         $this->getCoordinates($distrito);
     }
     public function searchSeccion(){
+        $this->load->model('Seccion_model');
         $seccion = $this->input->post('seccionales');
-        $this->getCoordinatesSeccion($seccion);
+        $data_coordenadas = $this->getCoordinatesSeccion($seccion);
+        $seccional = $this->Seccion_model->getSeccionById($seccion);
+        $data_jovenes = $this->getJovenes($seccional);
+        $response["coordenadas"] = $data_coordenadas;
+        $response["jovenes"] = $data_jovenes;
+        echo json_encode($response);
     }
     
 }

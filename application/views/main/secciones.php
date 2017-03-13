@@ -33,6 +33,11 @@
     }
     </style>
   </head>
+    
+
+<!-- jQuery -->
+<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+<!-- BS JavaScript -->
   <body>
     <?php if ($this->session->userdata("admin_login") and $this->session->userdata("admin_login")->level == 1) { ?>
     <div id="map"></div>
@@ -58,6 +63,42 @@
                 </div>
                     </center>
             </div>
+                           
+            
+                           
+<div class="modal fade" id="datos" tabindex="-1" role="dialog"  aria-hidden="true" style="color:black;">
+  <div class="modal-dialog"  role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"  id="exampleModalLabel">Jovenes</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <div class="row">
+              <div class="col-sm-12">
+            <div class="table-responsive">
+
+            <table class="table table-bordered table-hover" id="tabla">
+				
+				<tbody>
+					
+				</tbody>
+            </table>
+            </div> 
+                  </div>
+          </div>
+        </div>
+      <div class="modal-footer">
+        <!--button type="button" class="btn btn-primary">Save changes</button-->
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+             
+                           
             <!-- /.row -->
         </footer>
                     </div>
@@ -65,31 +106,15 @@
    <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>assets/css/jquery-ui-1.9.1.custom.css" /> 
           <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
 		<script type="text/javascript" src="<?php echo base_url();?>assets/js/jquery-1.7.2.min.js"></script>
-        <script type="text/javascript" src="<?php echo base_url();?>assets/js/jquery-ui-1.8.21.custom.min.js"></script>   
+        <script type="text/javascript" src="<?php echo base_url();?>assets/js/jquery-ui-1.8.21.custom.min.js"></script>  
+      <!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script>
-        
-        $(document).ready(function(){
-                                $("#seccion").change(function(){
-                                    if($("#seccion").val()===0){
-                                        
-                                    }else{
-                                   $.ajax({
-            url: "<?php echo base_url();?>index.php/main/searchSeccion",
-            type: "POST",
-            data:{
-                seccionales:$("#seccion").val()
-                                   },
-            success: function(data){
-                var triangleCoords =[];
-                var datos = $.parseJSON(data);
-                for(var i=0;i<datos.length;i++){
-                    var array = datos[i].split(" ");
-                    triangleCoords.push({ 
-        "lat" : parseFloat(array[2]),
-        "lng"  : parseFloat(array[1])
-    });
-                }
-                var map = new google.maps.Map(document.getElementById('map'), {
+           function mapearSeccional(triangleCoords,cantidadJovenes){
+    var map = new google.maps.Map(document.getElementById('map'), {
     zoom: 15,
     center: {lat: triangleCoords[0].lat, lng:triangleCoords[0].lng},
     mapTypeId: google.maps.MapTypeId.TERRAIN
@@ -105,8 +130,58 @@
     strokeWeight: 2,
     fillColor: '#FF0000',
     fillOpacity: 0.35
+   
   });
+  
   bermudaTriangle.setMap(map);
+  bermudaTriangle.addListener('click', mostrarTabla);
+
+  infoWindow = new google.maps.InfoWindow;     
+        
+  label: new MapLabel({
+    text: "Este seccional tiene: "+cantidadJovenes+" Jovenes",
+    position: new google.maps.LatLng(triangleCoords[0].lat, triangleCoords[0].lng), // the lat/lng of location of the label.
+    fontSize: 15,
+    fontColor: '#F2F000',
+    labelInBackground: true,
+    strokeColor: '#000',
+    map: map   // The map object to place the label on
+})  
+    }
+        function mostrarTabla(){
+                 
+                 $("#datos").modal('show');
+             }
+               
+        $(document).ready(function(){
+            
+                              $("#seccion").change(function(){
+                                    if($("#seccion").val()===0){
+                                        
+                                    }else{
+                                   $.ajax({
+            url: "<?php echo base_url();?>index.php/main/searchSeccion",
+            type: "POST",
+            data:{
+                seccionales:$("#seccion").val()
+                                   },
+            success: function(data){
+                var triangleCoords =[];
+                var datos = $.parseJSON(data);
+                for(var i=0;i<datos.coordenadas.length;i++){
+                    var array = datos.coordenadas[i].split(" ");
+                    triangleCoords.push({ 
+                    "lat" : parseFloat(array[2]),
+                    "lng"  : parseFloat(array[1]),
+                        });
+                    var cantidadJovenes = datos.jovenes.length; 
+                   
+                }
+                    construirTabla(datos);
+                    mapearSeccional(triangleCoords,cantidadJovenes);
+  
+    
+            
                                 }
 
                     }); 
@@ -114,15 +189,28 @@
                                     
                                 });
 
-                                
+        function construirTabla(datos){
+            $("#tabla").html('');
+            $("#tabla").append("<thead><tr><th class='text-center'>Apellido paterno</th><th class='text-center'>Apellido materno</th><th class='text-center'>Nombre(s)</th><th class='text-center'>Direccion</th><th class='text-center'>CP</th></tr></thead>");
+            for(var i=0;i<datos.jovenes.length;i++){
+            $("#tabla").append("<tr><td><font size ='2', color='000000'>"+datos.jovenes[i].ap_paterno+"</font></td><td><font size ='2', color='000000'>"+datos.jovenes[i].ap_materno+"</font></td><td><font size ='2', color='000000'>"+datos.jovenes[i].nombres+"</font></td><td><font size ='2', color='000000'>"+datos.jovenes[i].calle+" #"+datos.jovenes[i].exterior+","+datos.jovenes[i].colonia+", "+"</font></td><td><font size ='2', color='000000'>"+datos.jovenes[i].cp+"</font></td></tr>");
+    
+            }
+
+        }  
+            
+
         });
 
-
-
-
+ 
+        
+ 
     </script>
-    <script async defer
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDe1EXskkLEuvjNT20NBVcpH9BFTxEdpj4&callback=initMap"></script>
+
+      
+      <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDe1EXskkLEuvjNT20NBVcpH9BFTxEdpj4"></script>
+        <script type="text/javascript" src="<?php echo base_url();?>assets/js/maplabel.js"></script>   
+
     <?php }else{echo "Tu no deberias estar aqui!.";}?>
 
     </body>
