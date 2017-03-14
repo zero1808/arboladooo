@@ -17,6 +17,8 @@ class  Main  extends CI_Controller
     }   
     function goSecciones(){
         $this->load->model('seccion_model');
+        $this->load->model('distrito_model');
+        $datos["distritos"]=$this->distrito_model->getDistritos();
         $datos["secciones"]=$this->seccion_model->getSecciones();
         $this->load->view('main/secciones',$datos);
     }
