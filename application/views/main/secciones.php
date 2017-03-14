@@ -113,13 +113,15 @@
 <!-- Latest compiled JavaScript -->
 <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script>
+    var map;
            function mapearSeccional(triangleCoords,cantidadJovenes){
-    var map = new google.maps.Map(document.getElementById('map'), {
+     map = new google.maps.Map(document.getElementById('map'), {
     zoom: 15,
     center: {lat: triangleCoords[0].lat, lng:triangleCoords[0].lng},
     mapTypeId: google.maps.MapTypeId.TERRAIN
   });
 
+   
   // Define the LatLng coordinates for the polygon's path.
                 
   // Construct the polygon.
@@ -148,6 +150,33 @@
     map: map   // The map object to place the label on
 })  
     }
+
+
+//borrar luegini
+function geocodeAddress(geocoder, resultsMap, datos,i) {
+   var direccion = datos.jovenes[i].cp;
+  //var direccion = datos.jovenes[i].colonia+' '+datos.jovenes[i].cp;
+  //alert('cp es:'+direccion);
+  //var address = document.getElementById('direccion').value;
+  var address = 'México CP '+direccion;
+  //alert('cp es:'+address);
+  
+  geocoder.geocode({'address': address}, function(results, status) {
+    if (status === google.maps.GeocoderStatus.OK) {
+      resultsMap.setCenter(results[0].geometry.location);
+      var marker = new google.maps.Marker({
+        map: resultsMap,
+        position: results[0].geometry.location
+      });
+    } else {
+      //alert('Geocode was not successful for the following reason: ' + status);
+    }
+  });
+
+
+}
+
+
         function mostrarTabla(){
                  
                  $("#datos").modal('show');
@@ -179,7 +208,14 @@
                 }
                     construirTabla(datos);
                     mapearSeccional(triangleCoords,cantidadJovenes);
-  
+   var geocoder = new google.maps.Geocoder();
+
+ //document.getElementById('seccion').addEventListener('click', function() {
+  for(var i=0;i<cantidadJovenes;i++){
+
+    geocodeAddress(geocoder, map, datos,i);
+  }
+// });
     
             
                                 }
@@ -207,9 +243,11 @@
  
     </script>
 
-      
-      <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDe1EXskkLEuvjNT20NBVcpH9BFTxEdpj4"></script>
-        <script type="text/javascript" src="<?php echo base_url();?>assets/js/maplabel.js"></script>   
+     <!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDe1EXskkLEuvjNT20NBVcpH9BFTxEdpj4&callback=mapearSeccional"
+        async defer></script> -->
+     < <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDe1EXskkLEuvjNT20NBVcpH9BFTxEdpj4"></script>
+        <script type="text/javascript" src="<?php echo base_url();?>assets/js/maplabel.js"></script> 
+         
 
     <?php }else{echo "Tu no deberias estar aqui!.";}?>
 
