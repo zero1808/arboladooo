@@ -44,12 +44,13 @@
       <br>
                  <footer>
                   
-                           <div class="row">
+                
+                               <div class="row">
                            <div class="col-sm-12">
                            <div class="form-group">
                                <center>
                                
-                               <button type="button" data-toggle="modal" class="btn btn-success" data-target="#panel">Panel de control</button>
+                               <button type="button" id="bttPanel" class="btn btn-success" >Panel de control</button>
 
                                </center>
                                
@@ -118,7 +119,13 @@
         </button>
       </div>
       <div class="modal-body">
-         <center><h3>Agregue una nueva capa al mapa</h3></center>
+         <div class="row">
+         <div class="col-sm-12">
+         <div id="tabla_capas"></div>
+         </div>
+         </div>
+        <center><h3>Agregue una nueva capa al mapa</h3></center>
+
           <div class="row">
               <div class="col-sm-12">
                   <div class="form-group">
@@ -172,7 +179,7 @@
       
       <script>
       var map; 
-        
+      var capas=[];
         initComponents();
         function initComponents(){
   map = new google.maps.Map(document.getElementById('map'), {
@@ -182,15 +189,25 @@
   });  
         }
  
-        
-function mapearSeccional(triangleCoords,cantidadJovenes,datos){
+          function construirTabla(datos){
+            $("#tabla").html('');
+            $("#tabla").append("<thead><tr><th class='text-center'>Apellido paterno</th><th class='text-center'>Apellido materno</th><th class='text-center'>Nombre(s)</th><th class='text-center'>Direccion</th><th class='text-center'>CP</th></tr></thead>");
+            for(var i=0;i<datos.jovenes.length;i++){
+            $("#tabla").append("<tr><td><font size ='2', color='000000'>"+datos.jovenes[i].ap_paterno+"</font></td><td><font size ='2', color='000000'>"+datos.jovenes[i].ap_materno+"</font></td><td><font size ='2', color='000000'>"+datos.jovenes[i].nombres+"</font></td><td><font size ='2', color='000000'>"+datos.jovenes[i].calle+" #"+datos.jovenes[i].exterior+","+datos.jovenes[i].colonia+", "+"</font></td><td><font size ='2', color='000000'>"+datos.jovenes[i].cp+"</font></td></tr>");
+    
+            }
+
+        }
+function mapearSeccional(triangleCoords,cantidadJovenes,datos,seccional){
    
 
   // Define the LatLng coordinates for the polygon's path.
 map.setCenter(new google.maps.LatLng(triangleCoords[0].lat,triangleCoords[0].lng));
   // Construct the polygon.
-  var bermudaTriangle = new google.maps.Polygon({
+  
+   var bermudaTriangle = new google.maps.Polygon({
     paths: triangleCoords,
+    id : seccional,
     strokeColor: '#0000FF',
     strokeOpacity: 0.8,
     strokeWeight: 2,
@@ -201,8 +218,28 @@ map.setCenter(new google.maps.LatLng(triangleCoords[0].lat,triangleCoords[0].lng
   var geocoder = new google.maps.Geocoder();
   codeAddress(geocoder,map,datos);
   bermudaTriangle.setMap(map);
-  bermudaTriangle.addListener('click', mostrarTabla);
+  capas.push(bermudaTriangle);
+  //bermudaTriangle.addListener('click', mostrarTabla(triangleCoords[0].lat,triangleCoords[0].lng));
 
+  google.maps.event.addListener(bermudaTriangle, 'click', function (event) {
+  $.ajax({
+            url: "<?php echo base_url();?>index.php/main/searchJovenes",
+            type: "POST",
+            data:{
+                id_seccionaL:this.id
+                                   },
+            success: function(data){
+                var triangleCoords =[];
+                var datos = $.parseJSON(data);
+                construirTabla(datos); 
+                $("#datos").modal('show');
+            
+                                }
+
+                    });
+  
+  //Once you have the id here, you can trigger the color change
+});
   infoWindow = new google.maps.InfoWindow;     
         
   label: new MapLabel({
@@ -233,13 +270,30 @@ map.setCenter(new google.maps.LatLng(triangleCoords[0].lat,triangleCoords[0].lng
     }
     $("#no_encontrados").text("Jovenes no encontrados: "+notfound);    
   }    
-        
-        function mostrarTabla(){
-                 
-                 $("#datos").modal('show');
-             }
-               
+    
+    //AGREGAR EL BORRADO AL SELECT CON UN APPEND
+    function borrarCapa(id){
+      for(var i=0; i<capas.length;i++){
+
+        if(capas[i].id==id){
+            capas[i].setMap(null);
+            capas.splice(i-1, 1); 
+            $("#panel").modal('hide');
+         alert("se borro con exito");
+        }
+      }
+
+    };   
+    
         $(document).ready(function(){
+$("#bttPanel").click(function() {
+  $("#tabla_capas").html('');
+  for(var k=0;k<capas.length;k++){
+      $("#tabla_capas").append('<div class="row"><div class="col-sm-6"><p>'+capas[k].id+'</p></div><div class="col-sm-6"><button onClick="borrarCapa('+capas[k].id+')">Borrar</button></div></div>');
+
+  }
+  $("#panel").modal('show');
+});
             
                               $("#seccion").change(function(){
                                     if($("#seccion").val()===0){
@@ -260,13 +314,13 @@ map.setCenter(new google.maps.LatLng(triangleCoords[0].lat,triangleCoords[0].lng
                     "lat" : parseFloat(array[2]),
                     "lng"  : parseFloat(array[1]),
                         });
-                    var cantidadJovenes = datos.jovenes.length; 
                    
                 }   
-                    construirTabla(datos);
-                    mapearSeccional(triangleCoords,cantidadJovenes,datos);
-  
-    
+                    var cantidadJovenes = datos.jovenes.length; 
+                    var id_seccional = $("#seccion option:selected").val();
+                    mapearSeccional(triangleCoords,cantidadJovenes,datos,id_seccional);
+                  $("select#seccion option").filter("[value='"+id_seccional+"']").remove();
+                    $("#panel").modal('hide');
             
                                 }
 
@@ -326,20 +380,10 @@ map.setCenter(new google.maps.LatLng(parseFloat(longituds[0]),parseFloat(latitud
 
                     }); 
                                     }
-                                    
+
                                 });
 
-        function construirTabla(datos){
-            $("#tabla").html('');
-            $("#tabla").append("<thead><tr><th class='text-center'>Apellido paterno</th><th class='text-center'>Apellido materno</th><th class='text-center'>Nombre(s)</th><th class='text-center'>Direccion</th><th class='text-center'>CP</th></tr></thead>");
-            for(var i=0;i<datos.jovenes.length;i++){
-            $("#tabla").append("<tr><td><font size ='2', color='000000'>"+datos.jovenes[i].ap_paterno+"</font></td><td><font size ='2', color='000000'>"+datos.jovenes[i].ap_materno+"</font></td><td><font size ='2', color='000000'>"+datos.jovenes[i].nombres+"</font></td><td><font size ='2', color='000000'>"+datos.jovenes[i].calle+" #"+datos.jovenes[i].exterior+","+datos.jovenes[i].colonia+", "+"</font></td><td><font size ='2', color='000000'>"+datos.jovenes[i].cp+"</font></td></tr>");
-    
-            }
-
-        }  
-            
-
+   
         });
 
  

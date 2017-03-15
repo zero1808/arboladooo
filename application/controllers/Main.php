@@ -67,7 +67,7 @@ class  Main  extends CI_Controller
         $this->getCoordinates($distrito);
     }
     public function searchSeccion(){
-        $this->load->model('Seccion_model');
+       $this->load->model('Seccion_model');
         $seccion = $this->input->post('seccionales');
         $data_coordenadas = $this->getCoordinatesSeccion($seccion);
         $seccional = $this->Seccion_model->getSeccionById($seccion);
@@ -76,5 +76,12 @@ class  Main  extends CI_Controller
         $response["jovenes"] = $data_jovenes;
         echo json_encode($response);
     }
-    
+    public function searchJovenes(){
+        $this->load->model('Seccion_model');
+        $id = $this->input->post('id_seccionaL');
+        $seccional = $this->Seccion_model->getSeccionById($id);
+        $data_jovenes = $this->getJovenes($seccional);
+        $response["jovenes"] = $data_jovenes;
+        echo json_encode($response);
+    }
 }
